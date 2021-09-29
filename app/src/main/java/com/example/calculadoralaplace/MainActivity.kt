@@ -1,11 +1,10 @@
 package com.example.calculadoralaplace
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.calculadoralaplace.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.buttons_layout.*
+import kotlinx.android.synthetic.main.input_layout.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,22 +14,45 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initView()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    private fun initView(){
+        btn0.setOnClickListener { setProcess("0")}
+        btn1.setOnClickListener { setProcess("1")}
+        btn2.setOnClickListener { setProcess("2")}
+        btn3.setOnClickListener { setProcess("3")}
+        btn4.setOnClickListener { setProcess("4")}
+        btn5.setOnClickListener { setProcess("5")}
+        btn6.setOnClickListener { setProcess("6")}
+        btn7.setOnClickListener { setProcess("7")}
+        btn8.setOnClickListener { setProcess("8")}
+        btn9.setOnClickListener { setProcess("9")}
+        btnSum.setOnClickListener { setProcess("+")}
+        btnRest.setOnClickListener { setProcess("-")}
+        btnmultiply.setOnClickListener { setProcess("x")}
+        btnDivision.setOnClickListener { setProcess("÷")}
+        btnPercent.setOnClickListener { setProcess("%")}
+        btnClear.setOnClickListener {cleanCalculator()}
+        btnEquals.setOnClickListener { operateFunction() }
+
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    private fun operateFunction() {
+        val listaOperadores :List<String> = tvInput.text.toString().split("(?<=[-+*/])|(?=[-+*/])")
+        for (listaOperadore in listaOperadores) {
+            
         }
+    }
+
+    private fun setProcess(value:String){
+        val progress = tvInput.text
+        tvInput.text = String.format("%s %s",progress,value)
+    }
+
+    private fun cleanCalculator(){
+        tvInput.text = ""
+        tvOutput.text = ""
     }
 
 

@@ -13,7 +13,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
         <!--Primera fila -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnClear"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -24,7 +24,7 @@
             android:text="@string/c"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons"/>
 
         <Button
             android:id="@+id/btnBrackets"
@@ -37,7 +37,7 @@
             android:elevation="0dp"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btnPercent"
@@ -50,7 +50,7 @@
             android:elevation="0dp"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btnDivision"
@@ -63,7 +63,7 @@
             android:text="@string/divide_button"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <!--Segunda fila -->
 
@@ -77,7 +77,7 @@
             android:text="@string/buttonseven"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btn8"
@@ -89,7 +89,7 @@
             android:text="@string/buttoneight"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btn9"
@@ -101,7 +101,7 @@
             android:text="@string/buttonnine"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btnmultiply"
@@ -113,7 +113,7 @@
             android:text="@string/button_multi"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <!--Tercera fila -->
         <Button
@@ -126,7 +126,7 @@
             android:text="@string/buttonfour"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons"/>
 
         <Button
             android:id="@+id/btn5"
@@ -138,7 +138,7 @@
             android:text="@string/button_five"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons"/>
 
         <Button
             android:id="@+id/btn6"
@@ -150,7 +150,7 @@
             android:text="@string/button_Six"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btnRest"
@@ -162,7 +162,7 @@
             android:text="@string/button_Rest"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <!--Cuarta fila -->
         <Button
@@ -175,7 +175,7 @@
             android:text="@string/button_one"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btn2"
@@ -187,7 +187,7 @@
             android:text="@string/button_two"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btn3"
@@ -199,7 +199,7 @@
             android:text="@string/button_tree"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btnSum"
@@ -211,7 +211,7 @@
             android:text="@string/button_sum"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <!--Quinta fila -->
         <Button
@@ -224,7 +224,7 @@
             android:text="@string/button_zero"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
         <Button
             android:id="@+id/btnDot"
@@ -237,7 +237,7 @@
             android:text="@string/button_punto"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@color/black_buttons" />
+            android:background="@color/black_buttons" />
 
 
         <Button
