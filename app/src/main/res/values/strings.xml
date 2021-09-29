@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">CalculadoraLaPlace</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="c">C</string>
+    <string name="bracket_button">()</string>
+    <string name="percent_button">%</string>
+    <string name="divide_button">/</string>
+    <string name="buttonseven">7</string>
+    <string name="buttoneight">8</string>
+    <string name="buttonnine">9</string>
+    <string name="button_multi">x</string>
+    <string name="buttonfour">4</string>
+    <string name="button_five">5</string>
+    <string name="button_Six">6</string>
+    <string name="button_Rest">-</string>
+    <string name="button_tree">3</string>
+    <string name="button_two">2</string>
+    <string name="button_one">1</string>
+    <string name="button_zero">0</string>
+    <string name="button_punto">.</string>
+    <string name="button_equals">=</string>
+    <string name="button_sum">+</string>
+</resources>
