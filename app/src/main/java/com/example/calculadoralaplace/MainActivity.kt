@@ -1,174 +1,254 @@
 package com.example.calculadoralaplace
 
+import android.R
+import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
+import android.text.Editable
+import android.text.Html
+import android.text.Spanned
+import android.text.TextWatcher
+import android.util.Log
+import android.view.Gravity
 import android.view.View
-import android.widget.Button
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.calculadoralaplace.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.buttons_layout.*
-import kotlinx.android.synthetic.main.input_layout.*
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity() {
+
+open class MainActivity : AppCompatActivity(), AccionesLaPlace {
 
     private lateinit var binding: ActivityMainBinding
-    private var canAddOperation = false
-    private var canAddDecimal = true
+    private var listaFuncionesPlace: MutableList<String> = arrayListOf()
+    private var posicionFormula: Int = 0
+    private lateinit var fabricaLaPlace: LaPlaceFactory
+    private var valorx: String = "x"
+    private var valory: String = "y"
+    private var operacionTerminada = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        fabricaLaPlace = LaPlaceFactory(this)
+        iniciarAutocompleteText()
+        agregarListenerAutoComplete()
+        agregarListenerSeleccionAutocomplete()
+        agregarListenerBotton()
         setContentView(binding.root)
     }
 
-    fun numberAction(view: View)
-    {
-        if(view is Button)
-        {
-            if(view.text == ".")
-            {
-                if(canAddDecimal)
-                    workingsTV.append(view.text)
+    private fun iniciarAutocompleteText() {
+        listaFuncionesPlace.add(0, "a")
+        listaFuncionesPlace.add(1, "e^at")
+        listaFuncionesPlace.add(2, "t^n")
+        listaFuncionesPlace.add(3, "Sen(at)")
+        listaFuncionesPlace.add(4, "Cos(at)")
+        listaFuncionesPlace.add(5, "Senh(at)")
+        listaFuncionesPlace.add(6, "Cosh(at)")
+        listaFuncionesPlace.add(7, "t^n*e-at")
+        listaFuncionesPlace.add(8, "e^bt*cos(at)")
+        listaFuncionesPlace.add(9, "e^bt*sen(at)")
+        listaFuncionesPlace.add(10, "e^bt*seh(at)")
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, R.layout.select_dialog_item, listaFuncionesPlace)
+        binding.autocompleteLaPlace.setAdapter(adapter)
+        binding.autocompleteLaPlace.threshold = 0
+    }
 
-                canAddDecimal = false
+    private fun agregarListenerBotton() {
+        binding.button.setOnClickListener {
+            calcularRespuesta()
+        }
+    }
+
+
+    private fun validarCampos(): Boolean {
+        if (valorx == "x") {
+            Snackbar.make(
+                binding.constrainPadre.rootView,
+                "Por favor ingrese un valor para la variable x",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            return false
+        }
+        if ((posicionFormula == 7 || posicionFormula == 8
+                    || posicionFormula == 9 || posicionFormula == 10
+                    ) && valory == "y"
+        ) {
+            Snackbar.make(
+                binding.constrainPadre.rootView,
+                "Por favor ingrese un valor para la variable y",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            return false
+        }
+
+        return true
+    }
+
+
+    private fun calcularRespuesta() {
+        if (!validarCampos()) return
+        ajustaVisibilidadPrimerCampo(View.GONE)
+        ajustaVisibilidadSegundoCampo(View.GONE)
+        fabricaLaPlace.calcularOperacion(
+            obtenerCasoLaPlace(),
+            valorx,valory
+        )
+        valorx = "x"
+        valory = "y"
+        operacionTerminada = true
+        binding.editPrimeraVariable.setText(valorx)
+        binding.editSegundaVariable.setText(valory)
+        binding.button.visibility = View.GONE
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun agregarListenerAutoComplete() {
+        binding.autocompleteLaPlace.setOnTouchListener { _, _ ->
+            binding.autocompleteLaPlace.showDropDown()
+            binding.autocompleteLaPlace.requestFocus()
+            false
+        }
+    }
+
+    fun agregarListenerSeleccionAutocomplete() {
+        binding.autocompleteLaPlace.setOnItemClickListener { _, _, pos, _ ->
+            operacionTerminada = false
+            posicionFormula = pos
+            ajustaVisibilidadPrimerCampo(View.VISIBLE)
+            habilitarCapturaDatosY()
+            mostrarSnackBar()
+            mostrarBotton()
+            mostrarEditTextFormula()
+            asignarFocoEditText()
+        }
+    }
+
+
+    private fun habilitarCapturaDatosY() {
+        when (posicionFormula) {
+            7 -> ajustaVisibilidadSegundoCampo(View.VISIBLE)
+            8 -> ajustaVisibilidadSegundoCampo(View.VISIBLE)
+            9 -> ajustaVisibilidadSegundoCampo(View.VISIBLE)
+        }
+    }
+
+
+    private fun ajustaVisibilidadPrimerCampo(visible: Int) {
+        binding.textInputLayout2.visibility = visible
+        binding.editPrimeraVariable.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
             }
-            else
-                workingsTV.append(view.text)
 
-            canAddOperation = true
-        }
-    }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(!operacionTerminada){
+                    valorx = s.toString()
+                    binding.editTextTextPersonName.setText(obtenerFormula())
+                }
 
-    fun operationAction(view: View)
-    {
-        if(view is Button && canAddOperation)
-        {
-            workingsTV.append(view.text)
-            canAddOperation = false
-            canAddDecimal = true
-        }
-    }
-
-    fun allClearAction(view: View)
-    {
-        workingsTV.text = ""
-        resultsTV.text = ""
-    }
-
-    fun backSpaceAction(view: View)
-    {
-        val length = workingsTV.length()
-        if(length > 0)
-            workingsTV.text = workingsTV.text.subSequence(0, length - 1)
-    }
-
-    fun equalsAction(view: View)
-    {
-        resultsTV.text = calculateResults()
-    }
-
-    private fun calculateResults(): String
-    {
-        val digitsOperators = digitsOperators()
-        if(digitsOperators.isEmpty()) return ""
-
-        val timesDivision = timesDivisionCalculate(digitsOperators)
-        if(timesDivision.isEmpty()) return ""
-
-        val result = addSubtractCalculate(timesDivision)
-        return result.toString()
-    }
-
-    private fun addSubtractCalculate(passedList: MutableList<Any>): Float
-    {
-        var result = passedList[0] as Float
-
-        for(i in passedList.indices)
-        {
-            if(passedList[i] is Char && i != passedList.lastIndex)
-            {
-                val operator = passedList[i]
-                val nextDigit = passedList[i + 1] as Float
-                if (operator == '+')
-                    result += nextDigit
-                if (operator == '-')
-                    result -= nextDigit
             }
-        }
 
-        return result
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
 
-    private fun timesDivisionCalculate(passedList: MutableList<Any>): MutableList<Any>
-    {
-        var list = passedList
-        while (list.contains('x') || list.contains('/'))
-        {
-            list = calcTimesDiv(list)
-        }
-        return list
-    }
+    private fun ajustaVisibilidadSegundoCampo(visible: Int) {
+        binding.textInputLayout3.visibility = visible
+        binding.editSegundaVariable.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
-    private fun calcTimesDiv(passedList: MutableList<Any>): MutableList<Any>
-    {
-        val newList = mutableListOf<Any>()
-        var restartIndex = passedList.size
+            }
 
-        for(i in passedList.indices)
-        {
-            if(passedList[i] is Char && i != passedList.lastIndex && i < restartIndex)
-            {
-                val operator = passedList[i]
-                val prevDigit = passedList[i - 1] as Float
-                val nextDigit = passedList[i + 1] as Float
-                when(operator)
-                {
-                    'x' ->
-                    {
-                        newList.add(prevDigit * nextDigit)
-                        restartIndex = i + 1
-                    }
-                    '/' ->
-                    {
-                        newList.add(prevDigit / nextDigit)
-                        restartIndex = i + 1
-                    }
-                    else ->
-                    {
-                        newList.add(prevDigit)
-                        newList.add(operator)
-                    }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(!operacionTerminada){
+                    valory = s.toString()
+                    binding.editTextTextPersonName.setText(obtenerFormula())
                 }
             }
 
-            if(i > restartIndex)
-                newList.add(passedList[i])
-        }
-
-        return newList
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
 
-    private fun digitsOperators(): MutableList<Any>
-    {
-        val list = mutableListOf<Any>()
-        var currentDigit = ""
-        for(character in workingsTV.text)
-        {
-            if(character.isDigit() || character == '.')
-                currentDigit += character
-            else
-            {
-                list.add(currentDigit.toFloat())
-                currentDigit = ""
-                list.add(character)
-            }
+
+    private fun mostrarSnackBar() {
+        Toast.makeText(this, "Reemplaza la x por datos numericos", Toast.LENGTH_LONG).show()
+    }
+
+    private fun mostrarBotton() {
+        binding.button.visibility = View.VISIBLE
+    }
+
+    private fun asignarFocoEditText() {
+        binding.editPrimeraVariable.requestFocus()
+        val imm: InputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.editPrimeraVariable, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun mostrarEditTextFormula() {
+        binding.editTextTextPersonName.setText(obtenerFormula())
+        binding.editTextTextPersonName.visibility = View.VISIBLE
+    }
+
+
+    private fun obtenerFormula(): Spanned {
+        var valorFormula = ""
+        when (posicionFormula) {
+            0 -> valorFormula = valorx
+            1 -> valorFormula = "e<sup>$valorx t</sup>"
+            2 -> valorFormula = "t<sup>$valorx</sup>"
+            3 -> valorFormula = "Sen($valorx t)"
+            4 -> valorFormula = "Cos($valorx t)"
+            5 -> valorFormula = "Senh($valorx t)"
+            6 -> valorFormula = "Cosh($valorx t)"
+            7 -> valorFormula = "t<sup>$valorx</sup>  *  e<sup>-$valory t</sup>"
+            8 -> valorFormula = "e<sup>$valorx t</sup> * Cos($valory t)"
+            9 -> valorFormula = "e<sup>$valorx t</sup> * Sen($valory t)"
+
+        }
+        return Transversal.obtenerHtmlFuncion(valorFormula)
+    }
+
+
+    private fun obtenerCasoLaPlace(): OperacionLaPlace =
+        when (posicionFormula) {
+            0 -> OperacionLaPlace.PrimerCaso
+            1 -> OperacionLaPlace.SegundoCaso
+            2 -> OperacionLaPlace.TercerCaso
+            3 -> OperacionLaPlace.CuartoCaso
+            4 -> OperacionLaPlace.QuintoCaso
+            5 -> OperacionLaPlace.SextoCaso
+            6 -> OperacionLaPlace.SeptimoCaso
+            7 -> OperacionLaPlace.OctavoCaso
+            8 -> OperacionLaPlace.NovenoCaso
+            9 -> OperacionLaPlace.DecimoCaso
+            else -> OperacionLaPlace.PrimerCaso
         }
 
-        if(currentDigit != "")
-            list.add(currentDigit.toFloat())
 
-        return list
+    override fun notificarResultado(resultado: String) {
+        binding.editTextTextPersonName.setText(resultado)
+    }
+
+    override fun notificarResultado(resultado: Spanned) {
+        binding.editTextTextPersonName.setText(resultado)
+    }
+
+    override fun notificarError(mensaje: String) {
+        Snackbar.make(binding.constrainPadre.rootView, mensaje, Snackbar.LENGTH_LONG).show()
     }
 
 }

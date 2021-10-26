@@ -1,147 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/black_buttons"
-    tools:ignore="HardcodedText"
-    tools:context=".MainActivity">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:id="@+id/constrain_padre"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <AutoCompleteTextView
+        android:id="@+id/autocomplete_la_place"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:padding="20dp">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="16dp"
+        android:drawableEnd="@drawable/ic_baseline_arrow_drop_down_24"
+        android:text="@string/selecciona_una_funci_n"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/workingsTV"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:enabled="false"
+        android:hint="@string/hint_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_la_place">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextTextPersonName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:lines="2"
-            android:maxLines="2"
-            android:textColor="@color/white"
-            android:textAlignment="textEnd"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toTopOf="@id/resultsTV"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:enabled="false"
+            android:gravity="center"
+            android:textSize="30sp" />
 
-        <TextView
-            android:id="@+id/resultsTV"
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/variable_x"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editPrimeraVariable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:lines="1"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textAlignment="textEnd"
-            android:textSize="40sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            android:gravity="center"
+            android:inputType="number"
+            android:textSize="30sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout3"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:visibility="gone"
+        android:hint="@string/variable_y"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editSegundaVariable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:inputType="number"
+            android:textSize="30sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/calcular_derivada"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.267" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/tabla_transformada_de_laplace"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/autocomplete_la_place"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        style="@style/buttonRow">
-
-        <Button
-            style="@style/buttonNumber"
-            android:textColor="@color/orange"
-            android:onClick="allClearAction"
-            android:text="AC"/>
-        <Button
-            style="@style/buttonNumber"
-            android:textColor="@color/orange"
-            android:onClick="backSpaceAction"
-            android:text="⌫"/>
-        <Button
-            style="@style/buttonNumber"
-            android:text="" />
-        <Button
-            style="@style/buttonOperator"
-            android:text="/"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/buttonRow">
-
-        <Button
-            style="@style/buttonNumber"
-            android:text="7"/>
-        <Button
-            style="@style/buttonNumber"
-            android:text="8"/>
-        <Button
-            style="@style/buttonNumber"
-            android:text="9" />
-        <Button
-            style="@style/buttonOperator"
-            android:text="x"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/buttonRow">
-
-        <Button
-            style="@style/buttonNumber"
-            android:text="4"/>
-        <Button
-            style="@style/buttonNumber"
-            android:text="5"/>
-        <Button
-            style="@style/buttonNumber"
-            android:text="6" />
-        <Button
-            style="@style/buttonOperator"
-            android:text="-"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/buttonRow">
-
-        <Button
-            style="@style/buttonNumber"
-            android:text="1"/>
-        <Button
-            style="@style/buttonNumber"
-            android:text="2"/>
-        <Button
-            style="@style/buttonNumber"
-            android:text="3" />
-        <Button
-            style="@style/buttonOperator"
-            android:text="+"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/buttonRow">
-
-        <Button
-            style="@style/buttonNumber"
-            android:text="."/>
-        <Button
-            style="@style/buttonNumber"
-            android:text="0"/>
-        <Button
-            style="@style/buttonNumber"
-            android:layout_weight="2"
-            android:background="@color/orange"
-            android:textSize="40sp"
-            android:onClick="equalsAction"
-            android:text="=" />
-
-    </LinearLayout>
-
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
