@@ -32,4 +32,6 @@
     <string name="hint_text">Respuesta la place</string>
     <string name="tabla_transformada_de_laplace">Tabla transformada de laplace</string>
     <string name="selecciona_una_funci_n">Selecciona una función</string>
+    <string name="variable_y">Variable Y</string>
+    <string name="variable_x">Variable x</string>
 </resources>
