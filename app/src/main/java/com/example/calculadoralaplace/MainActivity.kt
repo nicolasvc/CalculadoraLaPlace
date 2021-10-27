@@ -3,23 +3,16 @@ package com.example.calculadoralaplace
 import android.R
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
-import android.text.Html
 import android.text.Spanned
 import android.text.TextWatcher
-import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.calculadoralaplace.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -29,8 +22,8 @@ open class MainActivity : AppCompatActivity(), AccionesLaPlace {
     private var listaFuncionesPlace: MutableList<String> = arrayListOf()
     private var posicionFormula: Int = 0
     private lateinit var fabricaLaPlace: LaPlaceFactory
-    private var valorx: String = "x"
-    private var valory: String = "y"
+    private var valorx: String = ""
+    private var valory: String = ""
     private var operacionTerminada = false
 
 
@@ -56,7 +49,7 @@ open class MainActivity : AppCompatActivity(), AccionesLaPlace {
         listaFuncionesPlace.add(7, "t^n*e-at")
         listaFuncionesPlace.add(8, "e^bt*cos(at)")
         listaFuncionesPlace.add(9, "e^bt*sen(at)")
-        listaFuncionesPlace.add(10, "e^bt*seh(at)")
+        //listaFuncionesPlace.add(10, "e^bt*seh(at)")
         val adapter: ArrayAdapter<String> =
             ArrayAdapter<String>(this, R.layout.select_dialog_item, listaFuncionesPlace)
         binding.autocompleteLaPlace.setAdapter(adapter)
@@ -103,8 +96,8 @@ open class MainActivity : AppCompatActivity(), AccionesLaPlace {
             obtenerCasoLaPlace(),
             valorx,valory
         )
-        valorx = "x"
-        valory = "y"
+        valorx = ""
+        valory = ""
         operacionTerminada = true
         binding.editPrimeraVariable.setText(valorx)
         binding.editSegundaVariable.setText(valory)
@@ -126,7 +119,7 @@ open class MainActivity : AppCompatActivity(), AccionesLaPlace {
             posicionFormula = pos
             ajustaVisibilidadPrimerCampo(View.VISIBLE)
             habilitarCapturaDatosY()
-            mostrarSnackBar()
+            mostrarToast()
             mostrarBotton()
             mostrarEditTextFormula()
             asignarFocoEditText()
@@ -152,7 +145,7 @@ open class MainActivity : AppCompatActivity(), AccionesLaPlace {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if(!operacionTerminada){
-                    valorx = s.toString()
+                    valorx = if (s.toString().contains("x") ) s.toString().replace("x","") else s.toString()
                     binding.editTextTextPersonName.setText(obtenerFormula())
                 }
 
@@ -172,7 +165,7 @@ open class MainActivity : AppCompatActivity(), AccionesLaPlace {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if(!operacionTerminada){
-                    valory = s.toString()
+                    valory =  if (s.toString().contains("y") ) s.toString().replace("x","") else s.toString()
                     binding.editTextTextPersonName.setText(obtenerFormula())
                 }
             }
@@ -183,7 +176,7 @@ open class MainActivity : AppCompatActivity(), AccionesLaPlace {
     }
 
 
-    private fun mostrarSnackBar() {
+    private fun mostrarToast() {
         Toast.makeText(this, "Reemplaza la x por datos numericos", Toast.LENGTH_LONG).show()
     }
 
@@ -196,6 +189,7 @@ open class MainActivity : AppCompatActivity(), AccionesLaPlace {
         val imm: InputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(binding.editPrimeraVariable, InputMethodManager.SHOW_IMPLICIT)
+        binding.editPrimeraVariable.setSelection(binding.editPrimeraVariable.text!!.length)
     }
 
     fun mostrarEditTextFormula() {
@@ -238,12 +232,17 @@ open class MainActivity : AppCompatActivity(), AccionesLaPlace {
             else -> OperacionLaPlace.PrimerCaso
         }
 
+    private fun mostrarSnackBar(){
+        Snackbar.make(binding.constrainPadre.rootView,"¡Ya puedes seleccionar otra formula si gustas!",Snackbar.LENGTH_SHORT).show()
+    }
 
     override fun notificarResultado(resultado: String) {
+        mostrarSnackBar()
         binding.editTextTextPersonName.setText(resultado)
     }
 
     override fun notificarResultado(resultado: Spanned) {
+        mostrarSnackBar()
         binding.editTextTextPersonName.setText(resultado)
     }
 

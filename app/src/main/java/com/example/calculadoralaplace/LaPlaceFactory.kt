@@ -9,7 +9,7 @@ open class LaPlaceFactory(private val accionesLaPlace: AccionesLaPlace) {
 
     fun calcularOperacion(operacionLaPlace: OperacionLaPlace, valorx: String, valorY: String) {
         this.valorx = Integer.parseInt(valorx)
-        if (valorY != "y")
+        if (valorY.isNotEmpty())
             this.valory = Integer.parseInt(valorY)
 
         when (operacionLaPlace) {
@@ -99,10 +99,11 @@ open class LaPlaceFactory(private val accionesLaPlace: AccionesLaPlace) {
 
 
     private fun obtenerFactorial(factorial: Int):String {
-        var fact = 1
+        var fact:Long= 1
         for (i in 1..factorial) {
-            fact *= i
+            fact *= i.toLong()
         }
+
         this.factorial = fact.toString()
         return fact.toString()
     }
